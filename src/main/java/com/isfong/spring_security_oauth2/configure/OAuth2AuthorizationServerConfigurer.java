@@ -1,15 +1,16 @@
 package com.isfong.spring_security_oauth2.configure;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
-import org.springframework.security.oauth2.provider.token.store.redis.RedisTokenStore;
+import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
+import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 
 @Configuration
 @EnableAuthorizationServer
@@ -17,32 +18,41 @@ import org.springframework.security.oauth2.provider.token.store.redis.RedisToken
 public class OAuth2AuthorizationServerConfigurer extends AuthorizationServerConfigurerAdapter {
     private static final String DEMO_RESOURCE_ID = "order";
     private final AuthenticationManager authenticationManager;
-    private final RedisConnectionFactory redisConnectionFactory;
+
+    @Bean
+    public JwtAccessTokenConverter accessTokenConverter( ) {
+        JwtAccessTokenConverter converter = new JwtAccessTokenConverter( );
+        converter.setSigningKey( "123456" );
+        return converter;
+    }
 
     @Override
     public void configure( ClientDetailsServiceConfigurer clients ) throws Exception {
         clients
                 .inMemory( )
-                .withClient( "client_1" )
-                .resourceIds( DEMO_RESOURCE_ID )
-                .authorizedGrantTypes( "client_credentials", "refresh_token" )
-                .scopes( "select" )
-                .authorities( "client" )
-                .secret( "123456" )
-                .and( )
+//                .withClient( "client_1" )
+//                .resourceIds( DEMO_RESOURCE_ID )
+//                .authorizedGrantTypes( "client_credentials", "refresh_token" )
+//                .scopes( "select" )
+//                .authorities( "client" )
+//                .secret( "123456" )
+//                .and( )
                 .withClient( "client_2" )
                 .resourceIds( DEMO_RESOURCE_ID )
                 .authorizedGrantTypes( "password", "refresh_token" )
                 .scopes( "select" )
                 .authorities( "client" )
-                .secret( "123456" );
+                .secret( "123456" )
+                .accessTokenValiditySeconds( 30 )
+                .refreshTokenValiditySeconds( 30 );
     }
 
     @Override
     public void configure( AuthorizationServerEndpointsConfigurer endpoints ) {
         endpoints
-                .tokenStore( new RedisTokenStore( redisConnectionFactory ) )
-                .authenticationManager( authenticationManager );
+                .tokenStore( new JwtTokenStore( accessTokenConverter( ) ) )
+                .authenticationManager( authenticationManager )
+                .accessTokenConverter( accessTokenConverter() );
     }
 
     @Override
@@ -50,5 +60,4 @@ public class OAuth2AuthorizationServerConfigurer extends AuthorizationServerConf
         //允许表单认证
         oauthServer.allowFormAuthenticationForClients( );
     }
-
 }

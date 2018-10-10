@@ -1,6 +1,7 @@
 package com.isfong.spring_security_oauth2.web.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -8,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequiredArgsConstructor
 public class ResController {
 
     @GetMapping( "product/{id}" )
@@ -27,4 +29,6 @@ public class ResController {
         jsonObject.put( "authentication", authentication );
         return jsonObject;
     }
+
+
 }
