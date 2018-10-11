@@ -2,6 +2,7 @@ package com.isfong.spring_security_oauth2.web.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,6 +22,7 @@ public class ResController {
         return jsonObject;
     }
 
+    @PostAuthorize( "hasRole('ROLE_ADMIN')" )
     @GetMapping( "order/{id}" )
     public Object order( @PathVariable long id ) {
         Authentication authentication = SecurityContextHolder.getContext( ).getAuthentication( );

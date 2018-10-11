@@ -3,6 +3,7 @@ package com.isfong.spring_security_oauth2.configure;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -13,6 +14,7 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity( prePostEnabled = true )
 public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
 
     @Bean
@@ -41,8 +43,8 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
     @Override
     protected UserDetailsService userDetailsService( ) {
         InMemoryUserDetailsManager inMemoryUserDetailsManager = new InMemoryUserDetailsManager( );
-        inMemoryUserDetailsManager.createUser( User.withUsername( "user_1" ).password( "123456" ).authorities( "USER" ).build( ) );
-        inMemoryUserDetailsManager.createUser( User.withUsername( "user_2" ).password( "123456" ).authorities( "USER" ).build( ) );
+        inMemoryUserDetailsManager.createUser( User.withUsername( "user_1" ).password( "123456" ).authorities( "ROLE_USER" ).build( ) );
+        inMemoryUserDetailsManager.createUser( User.withUsername( "user_2" ).password( "123456" ).authorities( "ROLE_USER" ).build( ) );
         return inMemoryUserDetailsManager;
     }
 
@@ -54,6 +56,8 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
                 .and( )
                 .authorizeRequests( )
                 .antMatchers( "/oauth/*" )
-                .permitAll( );
+                .permitAll( )
+                .anyRequest( )
+                .authenticated( );
     }
 }
