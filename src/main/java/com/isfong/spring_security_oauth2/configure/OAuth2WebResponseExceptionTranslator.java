@@ -1,13 +1,13 @@
 package com.isfong.spring_security_oauth2.configure;
 
 import com.alibaba.fastjson.JSONObject;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.common.exceptions.InvalidTokenException;
 import org.springframework.security.oauth2.provider.error.WebResponseExceptionTranslator;
-import org.springframework.stereotype.Component;
 
-@Component
+@Configuration
 public class OAuth2WebResponseExceptionTranslator implements WebResponseExceptionTranslator< Object > {
     @Override
     public ResponseEntity< Object > translate( Exception e ) {
