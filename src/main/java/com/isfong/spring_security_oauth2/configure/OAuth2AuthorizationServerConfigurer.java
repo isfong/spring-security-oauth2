@@ -26,7 +26,7 @@ import java.util.Map;
 public class OAuth2AuthorizationServerConfigurer extends AuthorizationServerConfigurerAdapter {
     private static final String DEMO_RESOURCE_ID = "order";
     private final AuthenticationManager authenticationManager;
-    private final OAuth2WebResponseExceptionTranslator oAuth2WebResponseExceptionTranslator;
+//    private final OAuth2WebResponseExceptionTranslator oAuth2WebResponseExceptionTranslator;
     private final UserDetailsService userDetailsService;
 
     @Bean
@@ -77,7 +77,7 @@ public class OAuth2AuthorizationServerConfigurer extends AuthorizationServerConf
                 .authenticationManager( authenticationManager )
                 .accessTokenConverter( accessTokenConverter( ) )
                 .userDetailsService( userDetailsService )
-                .exceptionTranslator( oAuth2WebResponseExceptionTranslator );
+                /*.exceptionTranslator( oAuth2WebResponseExceptionTranslator )*/;
     }
 
     @Override

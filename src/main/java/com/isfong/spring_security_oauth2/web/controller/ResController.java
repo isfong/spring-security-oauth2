@@ -15,6 +15,7 @@ public class ResController {
 
     @GetMapping( "product/{id}" )
     public Object product( @PathVariable long id ) {
+        int i = 1/0;
         Authentication authentication = SecurityContextHolder.getContext( ).getAuthentication( );
         JSONObject jsonObject = new JSONObject( );
         jsonObject.put( "product_id", id );
