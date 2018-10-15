@@ -1,3 +1,5 @@
+# 使用 Spring-Boot + Spring-Security + OAuth2 + JWT 集成的项目
+# 适用于自建用户系统，使用OAuth2的账号密码认证模式
 ###**认证会用到的相关请求**
 #####注：所有请求均为post请求。
 ## 获取access_token请求（/oauth/token） 
